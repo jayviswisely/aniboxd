@@ -1,17 +1,32 @@
 import { Link, useLocation } from "react-router-dom";
+import { useState } from 'react';
 
 export default function Navbar() {
-  const location = useLocation(); // Get current route
+  const location = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <nav className="bg-blue-600 p-4 text-white shadow-md">
-      <div className="container mx-auto flex justify-between items-center">
-        {/* Logo */}
-        <Link to="/" className="text-2xl font-bold hover:text-blue-200 transition">
-          AniBoxd
-        </Link>
+      <div className="container mx-auto flex flex-col md:flex-row md:justify-between md:items-center">
+        {/* Logo + Mobile Button Row */}
+        <div className="flex justify-between items-center">
+          <Link 
+            to="/" 
+            className="text-2xl font-bold hover:text-blue-200 transition"
+          >
+            AniBoxd
+          </Link>
+          
+          {/* Mobile Menu Button */}
+          <button 
+            className="md:hidden text-2xl"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? '✕' : '☰'}
+          </button>
+        </div>
 
-        {/* Desktop Links */}
+        {/* Desktop Links (unchanged) */}
         <div className="hidden md:flex space-x-6">
           <NavLink to="/" currentPath={location.pathname}>
             Home
@@ -24,14 +39,26 @@ export default function Navbar() {
           </NavLink>
         </div>
 
-        {/* Mobile Button (Placeholder) */}
-        <button className="md:hidden text-2xl">☰</button>
+        {/* Mobile Menu (new) */}
+        {isMenuOpen && (
+          <div className="md:hidden flex flex-col space-y-4 mt-4">
+            <NavLink to="/" currentPath={location.pathname}>
+              Home
+            </NavLink>
+            <NavLink to="/watchlist" currentPath={location.pathname}>
+              Watchlist
+            </NavLink>
+            <NavLink to="/profile" currentPath={location.pathname}>
+              Profile
+            </NavLink>
+          </div>
+        )}
       </div>
     </nav>
   );
 }
 
-// Helper component for active links
+// Your original NavLink component (perfect as-is!)
 function NavLink({ to, currentPath, children }) {
   const isActive = currentPath === to;
   return (
