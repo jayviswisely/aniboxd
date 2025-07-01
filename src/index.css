@@ -1,1 +1,31 @@
 @import "tailwindcss";
+
+/* Manual dark mode class */
+.dark {
+  --color-bg-primary: #1a202c;
+  --color-bg-secondary: #2d3748;
+  --color-text-primary: #f7fafc;
+  --color-text-secondary: #e2e8f0;
+}
+
+/* Custom blue palette to match navbar */
+.bg-blue-anime {
+  background-color: #2563eb; /* Same as navbar */
+}
+.hover\:bg-blue-anime:hover {
+  background-color: #1d4ed8;
+}
+.text-blue-anime {
+  color: #2563eb;
+}
+.hover\:text-blue-anime:hover {
+  color: #1d4ed8;
+}
+
+/* Fix for skeleton cards */
+.bg-gray-loading {
+  background-color: #e5e7eb;
+}
+.dark .bg-gray-loading {
+  background-color: #4b5563;
+}

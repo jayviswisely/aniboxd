@@ -1,11 +1,13 @@
 import React from 'react'
+import { useState, useEffect } from 'react';
 import AnimeCard from '../components/AnimeCard.jsx'
+import SkeletonCard from '../components/SkeletonCard.jsx';
 
 const mockAnime = [
   {
     id: 1,
     title: { english: "Attack on Titan", romaji: "Shingeki no Kyojin" },
-    coverImage: { large: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx1-CXtrrkMpJ8Zq.png" },
+    coverImage: { large: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx1-CXtrrkMpJ8Zhj.png" },
     averageScore: 86
   },
   // Add 4+ more mock items...
@@ -42,16 +44,25 @@ const mockAnime = [
 ];
 
 const Home = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">Trending Now</h1>
+      <h1 className="text-2xl font-bold mb-6 dark:text-white">Trending Now</h1>
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        {mockAnime.map(anime => (
-          <AnimeCard key={anime.id} anime={anime} />
-        ))}
+        {isLoading ? (
+          Array(6).fill(0).map((_, i) => <SkeletonCard key={i} />)
+        ) : (
+          mockAnime.map(anime => <AnimeCard key={anime.id} anime={anime} />)
+        )}
       </div>
     </div>
-  )
+  );
 }
 
 export default Home

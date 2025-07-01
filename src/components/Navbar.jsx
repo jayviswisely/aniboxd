@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from 'react';
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   const location = useLocation();
@@ -8,22 +9,17 @@ export default function Navbar() {
   return (
     <nav className="bg-blue-600 p-4 text-white shadow-md">
       <div className="container mx-auto flex flex-col md:flex-row md:justify-between md:items-center">
-        {/* Logo + Mobile Button Row */}
         <div className="flex justify-between items-center">
-          <Link 
-            to="/" 
-            className="text-2xl font-bold hover:text-blue-200 transition"
-          >
-            AniBoxd
-          </Link>
-          
-          {/* Mobile Menu Button */}
-          <button 
-            className="md:hidden text-2xl"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? '✕' : '☰'}
-          </button>
+            <Link to="/" className="text-2xl font-bold hover:text-blue-200 transition">
+                AniBoxd
+            </Link>
+            
+            <div className="flex items-center gap-4">
+                <ThemeToggle />
+                <button className="md:hidden text-2xl" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                {isMenuOpen ? '✕' : '☰'}
+                </button>
+            </div>
         </div>
 
         {/* Desktop Links (unchanged) */}
