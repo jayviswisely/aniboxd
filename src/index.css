@@ -1,31 +1,53 @@
 @import "tailwindcss";
 
-/* Manual dark mode class */
+/* Core Dark Mode Variables */
+:root {
+  --color-primary: #2563eb;
+  --color-primary-dark: #1e40af;
+}
+
 .dark {
   --color-bg-primary: #1a202c;
   --color-bg-secondary: #2d3748;
   --color-text-primary: #f7fafc;
   --color-text-secondary: #e2e8f0;
+  --color-navbar: var(--color-primary-dark);
 }
 
-/* Custom blue palette to match navbar */
+/* Navbar Colors */
 .bg-blue-anime {
-  background-color: #2563eb; /* Same as navbar */
+  background-color: var(--color-primary);
 }
+.dark .bg-blue-anime {
+  background-color: var(--color-navbar);
+}
+
+/* Interactive Elements */
 .hover\:bg-blue-anime:hover {
   background-color: #1d4ed8;
 }
 .text-blue-anime {
-  color: #2563eb;
+  color: var(--color-primary);
 }
 .hover\:text-blue-anime:hover {
   color: #1d4ed8;
 }
 
-/* Fix for skeleton cards */
+/* Skeleton Cards */
 .bg-gray-loading {
   background-color: #e5e7eb;
 }
 .dark .bg-gray-loading {
   background-color: #4b5563;
+}
+
+/* Global Dark Mode Styles */
+.dark {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+}
+
+/* Ensures dark mode propagates to child components */
+.dark .dark\:bg-gray-800 {
+  background-color: var(--color-bg-secondary);
 }
