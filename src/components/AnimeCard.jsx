@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 const AnimeCard = ({ anime }) => {
   return (
     <motion.div
-      className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow border border-gray-200 dark:border-gray-700"
+      className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
@@ -25,8 +25,8 @@ const AnimeCard = ({ anime }) => {
 
       {/* Title + Buttons - Now with Dark Mode Support */}
       <div className="p-4">
-        <h3 className="font-semibold text-lg truncate dark:text-white">
-          {anime.title.english || anime.title.romaji}
+        <h3 className="font-semibold text-lg truncate anime-card-title">
+            {anime.title.english || anime.title.romaji}
         </h3>
         <div className="mt-3 flex justify-between items-center">
           <span className="text-yellow-500 font-bold">

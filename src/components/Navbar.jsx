@@ -7,7 +7,7 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-blue-anime p-4 text-white shadow-md">
+    <nav className="bg-blue-anime p-4 text-white shadow-md transition-colors duration-300">
       <div className="container mx-auto flex flex-col md:flex-row md:justify-between md:items-center">
         <div className="flex justify-between items-center">
             <Link to="/" className="text-2xl font-bold hover:text-blue-200 transition">

@@ -1,53 +1,73 @@
 @import "tailwindcss";
 
-/* Core Dark Mode Variables */
+/* ===== Core Transitions ===== */
+html {
+  transition: 
+    background-color 300ms ease-in-out,
+    color 300ms ease-in-out;
+}
+
+/* ===== Color Variables ===== */
 :root {
-  --color-primary: #2563eb;
-  --color-primary-dark: #1e40af;
+  /* Light Mode */
+  --color-primary: #2563eb;       /* Navbar blue */
+  --color-primary-hover: #1d4ed8; /* Slightly darker blue */
+  --color-text-primary: #1f2937;  /* gray-800 */
+  --color-bg-primary: #ffffff;    /* white */
+  --color-bg-secondary: #f9fafb;  /* gray-50 */
+  --color-border: #e5e7eb;       /* gray-200 */
 }
 
 .dark {
-  --color-bg-primary: #1a202c;
-  --color-bg-secondary: #2d3748;
-  --color-text-primary: #f7fafc;
-  --color-text-secondary: #e2e8f0;
-  --color-navbar: var(--color-primary-dark);
+  /* Dark Mode */
+  --color-primary: #1e40af;       /* Darker navbar blue */
+  --color-primary-hover: #1e3a8a;
+  --color-text-primary: #f9fafb;  /* gray-50 */
+  --color-bg-primary: #1a202c;    /* gray-900 */
+  --color-bg-secondary: #2d3748;  /* gray-800 */
+  --color-border: #4b5563;       /* gray-600 */
 }
 
-/* Navbar Colors */
+/* ===== Text Colors ===== */
+.text-theme {
+  color: var(--color-text-primary);
+  transition: color 300ms ease-in-out;
+}
+
+.anime-card-title {
+  color: white; /* Always white */
+  transition: color 300ms ease-in-out; /* Smooth transition if you change your mind later */
+}
+
+/* ===== Navbar ===== */
 .bg-blue-anime {
   background-color: var(--color-primary);
+  transition: background-color 300ms ease-in-out;
 }
-.dark .bg-blue-anime {
-  background-color: var(--color-navbar);
-}
-
-/* Interactive Elements */
 .hover\:bg-blue-anime:hover {
-  background-color: #1d4ed8;
-}
-.text-blue-anime {
-  color: var(--color-primary);
-}
-.hover\:text-blue-anime:hover {
-  color: #1d4ed8;
+  background-color: var(--color-primary-hover);
 }
 
-/* Skeleton Cards */
+/* ===== Cards ===== */
+.card-bg {
+  background-color: var(--color-bg-primary);
+  border-color: var(--color-border);
+  transition: 
+    background-color 300ms ease-in-out,
+    border-color 300ms ease-in-out;
+}
+
+/* ===== Skeletons ===== */
 .bg-gray-loading {
-  background-color: #e5e7eb;
+  background-color: #e5e7eb; /* gray-200 */
+  transition: background-color 300ms ease-in-out;
 }
 .dark .bg-gray-loading {
-  background-color: #4b5563;
+  background-color: #4b5563; /* gray-600 */
 }
 
-/* Global Dark Mode Styles */
-.dark {
-  background-color: var(--color-bg-primary);
-  color: var(--color-text-primary);
-}
-
-/* Ensures dark mode propagates to child components */
-.dark .dark\:bg-gray-800 {
+/* ===== Global Background ===== */
+body {
   background-color: var(--color-bg-secondary);
+  color: var(--color-text-primary);
 }

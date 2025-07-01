@@ -52,8 +52,8 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6 dark:text-white">Trending Now</h1>
+    <div className="container mx-auto p-4 transition-colors duration-300">
+      <h1 className="text-2xl font-bold mb-6 text-theme">Trending Now</h1>
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         {isLoading ? (
           Array(6).fill(0).map((_, i) => <SkeletonCard key={i} />)
