@@ -78,7 +78,7 @@ const Home = ({ searchQuery }) => {
               Previous
             </button>
           )}
-          <span className="px-4 py-2 dark:text-white">Page {page}</span>
+          <span className="px-4 py-2 text-theme">Page {page}</span>
           {!isLastPage && (
             <button
               onClick={async () => {
