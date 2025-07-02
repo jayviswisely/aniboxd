@@ -44,6 +44,9 @@ html {
   background-color: var(--color-primary);
   transition: background-color 300ms ease-in-out;
 }
+.bg-blue-anime\/20 {
+  background-color: rgba(37, 99, 235, 0.2);
+}
 .hover\:bg-blue-anime:hover {
   background-color: var(--color-primary-hover);
 }

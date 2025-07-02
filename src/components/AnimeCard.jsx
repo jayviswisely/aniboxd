@@ -28,6 +28,10 @@ const AnimeCard = ({ anime }) => {
         <h3 className="font-semibold text-lg truncate anime-card-title">
             {anime.title.english || anime.title.romaji}
         </h3>
+        <div className="flex justify-between mt-1 text-xs text-gray-500 dark:text-gray-400">
+          <span>{anime.episodes || '?'} eps</span>
+          <span className="capitalize">{anime.status?.toLowerCase() || 'unknown'}</span>
+        </div>
         <div className="mt-3 flex justify-between items-center">
           <span className="text-yellow-500 font-bold">
             ⭐ {anime.averageScore || 'N/A'}

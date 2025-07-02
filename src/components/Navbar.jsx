@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useState } from 'react';
 import ThemeToggle from "./ThemeToggle";
 
-export default function Navbar() {
+export default function Navbar({ searchQuery, setSearchQuery }) {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -14,6 +14,16 @@ export default function Navbar() {
                 AniBoxd
             </Link>
             
+            <div className="flex-grow ml-4 mr-1">
+              <input
+                type="text"
+                placeholder="Search anime..."
+                className="w-full p-2 rounded border border-blue-400 bg-blue-500 placeholder-blue-200 text-white focus:outline-none focus:ring-2 focus:ring-blue-300"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+
             <div className="flex items-center gap-4">
                 <ThemeToggle />
                 <button className="md:hidden text-2xl" onClick={() => setIsMenuOpen(!isMenuOpen)}>

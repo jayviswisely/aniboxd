@@ -1,68 +1,92 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
+import { fetchAnimeList } from '../api/anilist';
 import AnimeCard from '../components/AnimeCard.jsx'
 import SkeletonCard from '../components/SkeletonCard.jsx';
 
-const mockAnime = [
-  {
-    id: 1,
-    title: { english: "Attack on Titan", romaji: "Shingeki no Kyojin" },
-    coverImage: { large: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx1-CXtrrkMpJ8Zhj.png" },
-    averageScore: 86
-  },
-  // Add 4+ more mock items...
-  {
-    id: 2,
-    title: { english: "Demon Slayer", romaji: "Kimetsu no Yaiba" },
-    coverImage: { large: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx2-4b5f8c7d3e6a.png" },
-    averageScore: 90
-  },
-  {
-    id: 3,
-    title: { english: "Jujutsu Kaisen", romaji: "Jujutsu Kaisen" },
-    coverImage: { large: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx3-5c8f8d7e6a9b.png" },
-    averageScore: 88
-  },
-  {
-    id: 4,
-    title: { english: "My Hero Academia", romaji: "Boku no Hero Academia" },
-    coverImage: { large: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx4-6d8f8e7f6a9c.png" },
-    averageScore: 85
-  },
-  {
-    id: 5,
-    title: { english: "One Piece", romaji: "One Piece" },
-    coverImage: { large: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx5-7e8f8f8g6a9d.png" },
-    averageScore: 92
-  },
-  {
-    id: 6,
-    title: { english: "Spy x Family", romaji: "Spy x Family" },
-    coverImage: { large: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx6-8f8f8g7h6a9e.png" },
-    averageScore: 89
-  }
-];
-
-const Home = () => {
+const Home = ({ searchQuery }) => {
+  const [animeList, setAnimeList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1500);
-    return () => clearTimeout(timer);
-  }, []);
+    const debounceTimer = setTimeout(() => {
+      const loadData = async () => {
+        try {
+          setIsLoading(true);
+          const { data, error: apiError } = await fetchAnimeList(searchQuery, page);
+          
+          console.log("API Data:", data); // Debug log
+          
+          if (apiError || !data?.Page?.media) {
+            setError('Failed to load anime data');
+            setAnimeList([]);
+          } else {
+            setAnimeList(data.Page.media);
+            setError(null);
+          }
+        } catch (err) {
+          setError('Network error occurred');
+          console.error(err);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      loadData();
+    }, 300);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchQuery, page]);
 
   return (
-    <div className="container mx-auto p-4 transition-colors duration-300">
-      <h1 className="text-2xl font-bold mb-6 text-theme">Trending Now</h1>
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+    <div className="container mx-auto p-4 transition-colors duration-300 min-h-screen">
+      {/* Error Message */}
+      {error && (
+        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded">
+          {error}
+        </div>
+      )}
+
+      {/* Results Title */}
+      <h1 className="text-2xl font-bold mb-6 text-theme">
+        {searchQuery ? 'Search Results' : 'Featured Anime'}
+      </h1>
+
+      {/* Content Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {isLoading ? (
-          Array(6).fill(0).map((_, i) => <SkeletonCard key={i} />)
+          Array(10).fill(0).map((_, i) => <SkeletonCard key={i} />)
+        ) : animeList.length > 0 ? (
+          animeList.map(anime => <AnimeCard key={anime.id} anime={anime} />)
         ) : (
-          mockAnime.map(anime => <AnimeCard key={anime.id} anime={anime} />)
+          <div className="col-span-full text-center py-10 dark:text-gray-300">
+            No anime found {searchQuery && `for "${searchQuery}"`}
+          </div>
         )}
       </div>
+
+      {/* Pagination Controls */}
+      {!isLoading && animeList.length > 0 && (
+        <div className="flex justify-center mt-8 space-x-2">
+          <button
+            onClick={() => setPage(p => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span className="px-4 py-2 dark:text-white">Page {page}</span>
+          <button
+            onClick={() => setPage(p => p + 1)}
+            className="px-4 py-2 bg-blue-600 text-white rounded"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 }
 
-export default Home
+export default Home;
