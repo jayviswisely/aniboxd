@@ -1,7 +1,6 @@
-import React from 'react'
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { fetchAnimeList } from '../api/anilist';
-import AnimeCard from '../components/AnimeCard.jsx'
+import AnimeCard from '../components/AnimeCard.jsx';
 import SkeletonCard from '../components/SkeletonCard.jsx';
 
 const Home = ({ searchQuery }) => {
@@ -9,6 +8,7 @@ const Home = ({ searchQuery }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
+  const [isLastPage, setIsLastPage] = useState(false);
 
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
@@ -16,15 +16,16 @@ const Home = ({ searchQuery }) => {
         try {
           setIsLoading(true);
           const { data, error: apiError } = await fetchAnimeList(searchQuery, page);
-          
-          console.log("API Data:", data); // Debug log
-          
+
           if (apiError || !data?.Page?.media) {
             setError('Failed to load anime data');
             setAnimeList([]);
+            setIsLastPage(true);
           } else {
             setAnimeList(data.Page.media);
             setError(null);
+            // Check if it's the last page based on result length
+            setIsLastPage(data.Page.media.length < 10);
           }
         } catch (err) {
           setError('Network error occurred');
@@ -69,24 +70,37 @@ const Home = ({ searchQuery }) => {
       {/* Pagination Controls */}
       {!isLoading && animeList.length > 0 && (
         <div className="flex justify-center mt-8 space-x-2">
-          <button
-            onClick={() => setPage(p => Math.max(1, p - 1))}
-            disabled={page === 1}
-            className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
-          >
-            Previous
-          </button>
+          {page > 1 && (
+            <button
+              onClick={() => setPage(p => Math.max(1, p - 1))}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Previous
+            </button>
+          )}
           <span className="px-4 py-2 dark:text-white">Page {page}</span>
-          <button
-            onClick={() => setPage(p => p + 1)}
-            className="px-4 py-2 bg-blue-600 text-white rounded"
-          >
-            Next
-          </button>
+          {!isLastPage && (
+            <button
+              onClick={async () => {
+                const nextPage = page + 1;
+                const { data } = await fetchAnimeList(searchQuery, nextPage);
+
+                if (data?.Page?.media?.length > 0) {
+                  setPage(nextPage);
+                } else {
+                  setIsLastPage(true); // Hide next button
+                  console.warn("No more anime found on the next page");
+                }
+              }}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Next
+            </button>
+          )}
         </div>
       )}
     </div>
   );
-}
+};
 
 export default Home;

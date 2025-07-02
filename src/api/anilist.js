@@ -2,6 +2,12 @@ export async function fetchAnimeList(search = '', page = 1) {
   const query = `
     query ($page: Int${search ? ', $search: String' : ''}) {
       Page(page: $page, perPage: 10) {
+        pageInfo {
+          total
+          currentPage
+          lastPage
+          hasNextPage
+        }
         media(
           type: ANIME, 
           ${search ? 'search: $search,' : ''}
@@ -28,7 +34,12 @@ export async function fetchAnimeList(search = '', page = 1) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query, variables })
     });
-    return await res.json();
+    const json = await res.json();
+    return {
+      data: json.data,
+      hasNextPage: json.data?.Page?.pageInfo?.hasNextPage ?? false,
+      error: null
+    };
   } catch (err) {
     console.error("API Error:", err);
     return { error: true };
