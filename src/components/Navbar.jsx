@@ -56,7 +56,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                     onClick={logout}
                     className="hidden md:block text-sm hover:underline"
                   >
-                    Sign Out
+                    Logout
                   </button>
                 </>
               ) : (
@@ -65,7 +65,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                   disabled={loading}
                   className="hidden md:block bg-white text-blue-600 px-3 py-1 rounded text-sm disabled:opacity-50"
                 >
-                  {loading ? "Loading..." : "Sign In"}
+                  {loading ? "Loading..." : "Login with Google"}
                 </button>
               )}
             </div>
@@ -111,7 +111,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                 onClick={logout}
                 className="text-left hover:underline"
               >
-                Sign Out
+                Logout
               </button>
             ) : (
               <button
@@ -119,7 +119,7 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                 disabled={loading}
                 className="text-left hover:underline disabled:opacity-50"
               >
-                {loading ? "Loading..." : "Sign In with Google"}
+                {loading ? "Loading..." : "Login with Google"}
               </button>
             )}
           </div>
