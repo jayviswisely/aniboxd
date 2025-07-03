@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Watchlist from "./pages/Watchlist";
 import Profile from "./pages/Profile";
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 const App = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -12,9 +13,14 @@ const App = () => {
     <Router>
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <Routes>
+        {/* Public Route */}
         <Route path="/" element={<Home searchQuery={searchQuery} />} />
-        <Route path="/watchlist" element={<Watchlist />} />
-        <Route path="/profile" element={<Profile />} />
+        
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/watchlist" element={<Watchlist />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
       </Routes>
     </Router>
   )
