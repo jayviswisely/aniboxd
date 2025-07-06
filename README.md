@@ -6,6 +6,10 @@
 
 ---
 
+## 🌐 Live Demo
+
+👉 [Click here to try it out!](https://aniboxd.netlify.app)
+
 ## 🚀 Features
 
 - 🔍 **Anime Search** – Powered by AniList API
@@ -41,8 +45,8 @@ npm run dev  # or npm start
 ```
 
 Make sure to:
-
-- Create a `.env` file with your Firebase config
+9
+- Create a `.env` file with your Firebase config (or rename [.env.example](.env.example) to .env and modify)
 
 ---
 
