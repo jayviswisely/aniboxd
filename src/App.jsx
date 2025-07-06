@@ -18,8 +18,8 @@ const App = () => {
         
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/watchlist" element={<Watchlist />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="watchlist" element={<Watchlist />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
       </Routes>
     </Router>
