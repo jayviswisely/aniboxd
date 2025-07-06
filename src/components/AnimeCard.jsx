@@ -1,7 +1,13 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import { useWatchlist } from '../hooks/useWatchlist';
+import { useAuth } from '../hooks/useAuth';
 
 const AnimeCard = ({ anime }) => {
+  const { user } = useAuth();
+  const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlist(user?.uid);
+  const isInWatchlist = watchlist.some(item => item.animeId === anime.id);
+
   return (
     <motion.div
       className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700"
@@ -37,11 +43,19 @@ const AnimeCard = ({ anime }) => {
             ⭐ {anime.averageScore || 'N/A'}
           </span>
           <motion.button 
-            className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition-colors"
+            className={`px-3 py-1 rounded text-sm transition-colors ${
+              isInWatchlist 
+                ? 'bg-red-600 hover:bg-red-700' 
+                : 'bg-blue-600 hover:bg-blue-700'
+            } text-white`}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => isInWatchlist 
+              ? removeFromWatchlist(anime.id) 
+              : addToWatchlist(anime)
+            }
           >
-            + Watchlist
+            {isInWatchlist ? '− Remove' : '+ Watchlist'}
           </motion.button>
         </div>
       </div>
