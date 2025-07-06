@@ -34,6 +34,7 @@ export const useAuth = () => {
     try {
       const auth = getAuth();
       await signOut(auth);
+      window.location.reload();
     } catch (error) {
       console.error("Logout error:", error);
     }
