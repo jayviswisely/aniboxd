@@ -8,6 +8,21 @@ const AnimeCard = ({ anime }) => {
   const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlist(user?.uid);
   const isInWatchlist = watchlist.some(item => item.animeId === anime.id);
 
+  // Status mapping
+  const getStatusLabel = (status) => {
+    if (!status) return 'unknown';
+    
+    const statusMap = {
+      'FINISHED': 'Completed',
+      'RELEASING': 'Ongoing',
+      'NOT_YET_RELEASED': 'Upcoming',
+      'CANCELLED': 'Cancelled',
+      'HIATUS': 'Hiatus'
+    };
+    
+    return statusMap[status.toUpperCase()] || status.toLowerCase();
+  };
+
   return (
     <motion.div
       className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700"
@@ -36,7 +51,9 @@ const AnimeCard = ({ anime }) => {
         </h3>
         <div className="flex justify-between mt-1 text-xs text-gray-500 dark:text-gray-400">
           <span>{anime.episodes || '?'} eps</span>
-          <span className="capitalize">{anime.status?.toLowerCase() || 'unknown'}</span>
+          <span className="capitalize">
+            {getStatusLabel(anime.status)}
+          </span>
         </div>
         <div className="mt-3 flex justify-between items-center">
           <span className="text-yellow-500 font-bold">
