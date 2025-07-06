@@ -2,7 +2,7 @@ import React from 'react'
 
 const SkeletonCard = () => {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+    <div className="card-bg rounded-lg overflow-hidden shadow-md border transition-colors duration-300">
       <div className="w-full h-64 bg-gray-loading animate-pulse"></div>
       <div className="p-4 space-y-3">
         <div className="h-5 bg-gray-loading rounded w-3/4 animate-pulse"></div>

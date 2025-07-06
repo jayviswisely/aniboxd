@@ -8,7 +8,6 @@ const AnimeCard = ({ anime }) => {
   const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlist(user?.uid);
   const isInWatchlist = watchlist.some(item => item.animeId === anime.id);
 
-  // Status mapping
   const getStatusLabel = (status) => {
     if (!status) return 'unknown';
     
@@ -25,7 +24,7 @@ const AnimeCard = ({ anime }) => {
 
   return (
     <motion.div
-      className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700"
+      className="card-bg rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
@@ -34,7 +33,6 @@ const AnimeCard = ({ anime }) => {
         boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)'
       }}
     >
-      {/* Poster Image with Enhanced Hover */}
       <motion.img 
         src={anime.coverImage.large} 
         alt={anime.title.english || anime.title.romaji}
@@ -44,9 +42,8 @@ const AnimeCard = ({ anime }) => {
         transition={{ duration: 0.2 }}
       />
 
-      {/* Title + Buttons - Now with Dark Mode Support */}
       <div className="p-4">
-        <h3 className="font-semibold text-lg truncate anime-card-title">
+        <h3 className="font-semibold text-lg truncate text-theme">
             {anime.title.english || anime.title.romaji}
         </h3>
         <div className="flex justify-between mt-1 text-xs text-gray-500 dark:text-gray-400">

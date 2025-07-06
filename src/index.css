@@ -35,8 +35,8 @@ html {
 }
 
 .anime-card-title {
-  color: white; /* Always white */
-  transition: color 300ms ease-in-out; /* Smooth transition if you change your mind later */
+  color: white;
+  transition: color 300ms ease-in-out;
 }
 
 /* ===== Navbar ===== */
@@ -62,7 +62,7 @@ html {
 
 /* ===== Skeletons ===== */
 .bg-gray-loading {
-  background-color: #e5e7eb; /* gray-200 */
+  background-color: var(--color-border);
   transition: background-color 300ms ease-in-out;
 }
 .dark .bg-gray-loading {
