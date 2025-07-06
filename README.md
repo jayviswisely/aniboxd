@@ -70,7 +70,7 @@ https://graphql.anilist.co
 
 ## 📄 License
 
-MIT License. Feel free to fork, use, and improve it!
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
