@@ -10,7 +10,7 @@ const LoginModal = ({ onClose }) => {
   return (
     <div className="fixed inset-0 color-bg-primary dark:color-bg-primary bg-opacity-50 flex items-center justify-center z-50">
       <motion.div 
-        className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-sm w-full mx-4"
+        className="bg-gray-800 rounded-lg p-6 max-w-sm w-full mx-4"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
