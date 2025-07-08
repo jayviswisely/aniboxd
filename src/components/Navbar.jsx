@@ -10,6 +10,9 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const { user, loading, loginWithGoogle, logout } = useAuth();
 
+  // Check if current route is home page
+  const isHomePage = location.pathname === '/';
+  
   const handleProtectedNavClick = (e) => {
     if (!user) {
       e.preventDefault();
@@ -41,15 +44,18 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
                 AniBoxd
             </Link>
             
-            <div className="hidden md:block flex-grow mx-4">
-              <input
-                type="text"
-                placeholder="Search anime..."
-                className="w-full max-w-lg p-2 rounded border border-blue-400 bg-blue-500 placeholder-blue-200 text-white focus:outline-none focus:ring-2 focus:ring-blue-300"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
+            {/* Desktop Search - Only show on home page */}
+            {isHomePage && (
+              <div className="hidden md:block flex-grow mx-4">
+                <input
+                  type="text"
+                  placeholder="Search anime..."
+                  className="w-full max-w-lg p-2 rounded border border-blue-400 bg-blue-500 placeholder-blue-200 text-white focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            )}
 
             <div className="flex items-center gap-4">
               <div className="hidden md:flex space-x-6">
@@ -101,15 +107,18 @@ export default function Navbar({ searchQuery, setSearchQuery }) {
             </div>
           </div>
 
-          <div className="md:hidden mt-3 w-full">
-            <input
-              type="text"
-              placeholder="Search anime..."
-              className="w-full p-2 rounded border border-blue-400 bg-blue-500 placeholder-blue-200 text-white focus:outline-none focus:ring-2 focus:ring-blue-300"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
+          {/* Mobile Search - Only show on home page */}
+          {isHomePage && (
+            <div className="md:hidden mt-3 w-full">
+              <input
+                type="text"
+                placeholder="Search anime..."
+                className="w-full p-2 rounded border border-blue-400 bg-blue-500 placeholder-blue-200 text-white focus:outline-none focus:ring-2 focus:ring-blue-300"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+          )}
 
           {isMenuOpen && (
             <div className="md:hidden flex flex-col space-y-4 mt-4">
