@@ -20,18 +20,16 @@ const Watchlist = () => {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {watchlist.map(item => (
             <AnimeCard 
-              key={item.animeId || item.id} // Fallback for doc ID
+              key={item.animeId || item.id}
               anime={{
-                // Required fields
-                id: item.animeId || item.id, // Handle both cases
+                id: item.animeId || item.id,
                 title: { 
-                  english: item.title || "No title", // Flat string → object
+                  english: item.title || "No title",
                   romaji: item.title || "No title" 
                 },
                 coverImage: { 
                   large: item.coverImage || "https://placehold.co/300x400" 
                 },
-                // Optional fields (add if available in Firestore)
                 episodes: item.episodes || '?',
                 status: item.status || 'unknown',
                 averageScore: item.averageScore || 'N/A'
