@@ -75,6 +75,27 @@ const AnimeCard = ({ anime }) => {
     setShowDropdown(false);
   };
 
+  const formatEpisodes = () => {
+    if (!anime.episodes) return '?';
+    
+    // For ongoing/releasing anime, show current/total if available
+    if (anime.status === 'RELEASING' || anime.status === 'releasing') {
+      const released = anime.nextAiringEpisode?.episode 
+        ? anime.nextAiringEpisode.episode - 1 
+        : '?';
+      const total = anime.episodes || '?';
+      return `${released}/${total}`;
+    }
+    
+    // For completed anime, show total episodes
+    if (anime.status === 'FINISHED' || anime.status === 'finished') {
+      return `${anime.episodes}/${anime.episodes}`;
+    }
+    
+    // For other cases, just show total episodes
+    return `?/${anime.episodes}`;
+  };
+
   return (
     <div className="relative" style={{ zIndex: showDropdown ? 10 : 'auto' }}>
       <motion.div
@@ -101,7 +122,7 @@ const AnimeCard = ({ anime }) => {
               {anime.title.english || anime.title.romaji}
           </h3>
           <div className="flex justify-between mt-1 text-xs text-gray-500 dark:text-gray-400">
-            <span>{anime.episodes || '?'} eps</span>
+            <span>{formatEpisodes()} eps</span>
             <span className="capitalize">
               {getStatusLabel(anime.status)}
             </span>

@@ -32,7 +32,8 @@ const Watchlist = () => {
                 },
                 episodes: item.episodes || '?',
                 status: item.status || 'unknown',
-                averageScore: item.averageScore || 'N/A'
+                averageScore: item.averageScore || 'N/A',
+                nextAiringEpisode: item.nextAiringEpisode || null
               }}
             />
           ))}

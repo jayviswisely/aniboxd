@@ -20,6 +20,10 @@ export async function fetchAnimeList(search = '', page = 1) {
           averageScore
           episodes
           status
+          nextAiringEpisode {
+            episode
+            airingAt
+          }
         }
       }
     }
