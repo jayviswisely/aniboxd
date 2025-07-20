@@ -5,9 +5,9 @@ import { doc, setDoc, deleteDoc, collection, onSnapshot } from 'firebase/firesto
 export const useWatchlist = (userId) => {
   const [watchlist, setWatchlist] = useState([]);
   const [watched, setWatched] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Real-time updates for both collections
   useEffect(() => {
     if (!userId) return;
     
@@ -31,9 +31,23 @@ export const useWatchlist = (userId) => {
       }
     );
 
+    const unsubscribeReviews = onSnapshot(
+      collection(db, 'users', userId, 'reviews'),
+      (snapshot) => {
+        setReviews(snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          userId,
+          userName: snapshot.metadata.fromCache ? '' : doc.data().userName || '',
+          userPhoto: snapshot.metadata.fromCache ? '' : doc.data().userPhoto || ''
+        })));
+      }
+    );
+
     return () => {
       unsubscribeWatchlist();
       unsubscribeWatched();
+      unsubscribeReviews();
     };
   }, [userId]);
 
@@ -79,12 +93,48 @@ export const useWatchlist = (userId) => {
     await deleteDoc(doc(db, 'users', userId, listType, animeId.toString()));
   };
 
+  const addReview = async (animeId, reviewData) => {
+    setLoading(true);
+    try {
+      await setDoc(doc(db, 'users', userId, 'reviews', animeId.toString()), {
+        animeId,
+        ...reviewData,
+        userName: reviewData.userName || '',
+        userPhoto: reviewData.userPhoto || '',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateReview = async (animeId, reviewData) => {
+    setLoading(true);
+    try {
+      await setDoc(doc(db, 'users', userId, 'reviews', animeId.toString()), {
+        ...reviewData,
+        updatedAt: new Date()
+      }, { merge: true });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteReview = async (animeId) => {
+    await deleteDoc(doc(db, 'users', userId, 'reviews', animeId.toString()));
+  };
+
   return { 
     watchlist, 
     watched,
+    reviews,
     addToWatchlist, 
     addToWatched,
-    removeFromList, 
+    removeFromList,
+    addReview,
+    updateReview,
+    deleteReview,
     loading 
   };
 };

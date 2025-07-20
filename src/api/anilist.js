@@ -49,3 +49,48 @@ export async function fetchAnimeList(search = '', page = 1) {
     return { error: true };
   }
 }
+
+export async function fetchAnimeDetails(id) {
+  const query = `
+    query ($id: Int) {
+      Media(id: $id, type: ANIME) {
+        id
+        title {
+          english
+          romaji
+        }
+        description(asHtml: false)
+        coverImage {
+          large
+        }
+        bannerImage
+        averageScore
+        episodes
+        status
+        genres
+        studios {
+          nodes {
+            name
+          }
+        }
+        nextAiringEpisode {
+          episode
+          airingAt
+        }
+      }
+    }
+  `;
+
+  try {
+    const res = await fetch('https://graphql.anilist.co', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, variables: { id: parseInt(id) } })
+    });
+    const json = await res.json();
+    return json.data?.Media || null;
+  } catch (err) {
+    console.error("API Error:", err);
+    return null;
+  }
+}

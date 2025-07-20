@@ -2,15 +2,29 @@ import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useWatchlist } from '../hooks/useWatchlist';
 import AnimeCard from '../components/AnimeCard';
+import ReviewCard from '../components/ReviewCard';
 
 const Profile = () => {
   const { user } = useAuth();
-  const { watched } = useWatchlist(user?.uid);
+  const { watched, reviews } = useWatchlist(user?.uid);
   const [activeTab, setActiveTab] = useState('watched'); // 'watched' or 'reviews'
 
   return (
     <div className="container mx-auto p-4 min-h-screen">
-      <h1 className="text-2xl font-bold mb-6">Your Profile</h1>
+      <div className="flex items-center gap-4 mb-6">
+        <img 
+          src={user?.photoURL} 
+          alt={user?.displayName}
+          className="w-16 h-16 rounded-full"
+          onError={(e) => e.target.src = 'https://ui-avatars.com/api/?name=' + user?.displayName}
+        />
+        <div>
+          <h1 className="text-2xl font-bold">{user?.displayName || 'Your Profile'}</h1>
+          <p className="text-gray-500">
+            {watched.length} anime watched • {reviews.length} reviews
+          </p>
+        </div>
+      </div>
       
       {/* Tab Buttons */}
       <div className="flex space-x-4 mb-6 border-b border-gray-200 dark:border-gray-700">
@@ -63,9 +77,49 @@ const Profile = () => {
 
       {/* Reviews Tab */}
       {activeTab === 'reviews' && (
-        <div className="text-center py-20">
-          <p className="text-xl font-medium">Reviews coming soon!</p>
-          <p className="text-gray-500 mt-2">We're working on this feature</p>
+        <div>
+          {reviews.length === 0 ? (
+            <div className="text-center py-10">
+              <p className="text-lg">You haven't reviewed any anime yet</p>
+              <p className="text-gray-500">Reviews you write will appear here</p>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {reviews.map(review => (
+                <div key={review.id} className="flex flex-col md:flex-row gap-4">
+                  <div className="md:w-1/4 lg:w-1/5">
+                    <AnimeCard 
+                      anime={{
+                        id: review.animeId,
+                        title: { 
+                          english: review.animeTitle,
+                          romaji: review.animeTitle
+                        },
+                        coverImage: { 
+                          large: review.animeCover || "https://placehold.co/300x400" 
+                        }
+                      }}
+                    />
+                  </div>
+                  <div className="md:w-3/4 lg:w-4/5">
+                    <ReviewCard 
+                      review={review}
+                      isOwner={true}
+                      onEdit={() => {
+                        // This would navigate to the anime page with review form open
+                        window.location.href = `/anime/${review.animeId}`;
+                      }}
+                      onDelete={() => {
+                        if (window.confirm('Delete this review?')) {
+                          deleteReview(review.animeId);
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
