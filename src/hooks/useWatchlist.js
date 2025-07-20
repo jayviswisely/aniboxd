@@ -44,8 +44,11 @@ export const useWatchlist = (userId) => {
         animeId: anime.id,
         title: anime.title.english || anime.title.romaji,
         coverImage: anime.coverImage.large,
-        addedAt: new Date(),
-        status: 'to_watch'
+        episodes: anime.episodes,
+        status: anime.status || 'unknown',
+        averageScore: anime.averageScore || 'N/A',
+        nextAiringEpisode: anime.nextAiringEpisode || null,
+        addedAt: new Date()
       });
     } finally {
       setLoading(false);
@@ -55,16 +58,17 @@ export const useWatchlist = (userId) => {
   const addToWatched = async (anime) => {
     setLoading(true);
     try {
-      // Remove from watchlist if it exists there
       await deleteDoc(doc(db, 'users', userId, 'watchlist', anime.id.toString()));
       
-      // Add to watched collection
       await setDoc(doc(db, 'users', userId, 'watched', anime.id.toString()), {
         animeId: anime.id,
         title: anime.title.english || anime.title.romaji,
         coverImage: anime.coverImage.large,
-        watchedAt: new Date(),
-        status: 'watched'
+        episodes: anime.episodes,
+        status: anime.status || 'unknown',
+        averageScore: anime.averageScore || 'N/A',
+        nextAiringEpisode: anime.nextAiringEpisode || null,
+        watchedAt: new Date()
       });
     } finally {
       setLoading(false);
