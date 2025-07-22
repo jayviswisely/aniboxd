@@ -16,9 +16,12 @@ const ReviewForm = ({ anime, existingReview, onSubmit, onCancel }) => {
     }
   }, [existingReview]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit({
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!user) return;
+  
+  try {
+    const reviewData = {
       rating,
       text: reviewText,
       isSpoiler,
@@ -26,9 +29,15 @@ const ReviewForm = ({ anime, existingReview, onSubmit, onCancel }) => {
       animeTitle: anime.title.english || anime.title.romaji,
       animeCover: anime.coverImage.large,
       userName: user.displayName,
-      userPhoto: user.photoURL
-    });
-  };
+      userPhoto: user.photoURL,
+      userId: user.uid
+    };
+    
+    await onSubmit(reviewData);
+  } catch (error) {
+    console.error("Review submission error:", error);
+  }
+};
 
   return (
     <motion.div 

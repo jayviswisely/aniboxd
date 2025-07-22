@@ -97,13 +97,21 @@ export const useWatchlist = (userId) => {
     setLoading(true);
     try {
       await setDoc(doc(db, 'users', userId, 'reviews', animeId.toString()), {
-        animeId,
-        ...reviewData,
-        userName: reviewData.userName || '',
-        userPhoto: reviewData.userPhoto || '',
+        animeId: animeId,
+        rating: reviewData.rating,
+        text: reviewData.text,
+        isSpoiler: reviewData.isSpoiler,
+        animeTitle: reviewData.animeTitle,
+        animeCover: reviewData.animeCover,
+        userName: reviewData.userName,
+        userPhoto: reviewData.userPhoto,
+        userId: userId,
         createdAt: new Date(),
         updatedAt: new Date()
       });
+    } catch (error) {
+      console.error("Error adding review:", error);
+      throw error;
     } finally {
       setLoading(false);
     }

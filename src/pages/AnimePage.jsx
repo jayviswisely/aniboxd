@@ -38,17 +38,32 @@ const AnimePage = () => {
   }, [id]);
 
   const handleReviewSubmit = async (reviewData) => {
-    try {
-      if (userReview) {
-        await updateReview(id, reviewData);
-      } else {
-        await addReview(id, reviewData);
-      }
-      setShowReviewForm(false);
-    } catch (err) {
-      console.error("Failed to save review:", err);
+  try {
+    if (userReview) {
+      await updateReview(id, {
+        rating: reviewData.rating,
+        text: reviewData.text,
+        isSpoiler: reviewData.isSpoiler,
+        updatedAt: new Date()
+      });
+    } else {
+      await addReview(id, {
+        rating: reviewData.rating,
+        text: reviewData.text,
+        isSpoiler: reviewData.isSpoiler,
+        animeTitle: anime.title.english || anime.title.romaji,
+        animeCover: anime.coverImage.large,
+        userName: user.displayName || "Anonymous",
+        userPhoto: user.photoURL || "",
+        userId: user.uid
+      });
     }
-  };
+    setShowReviewForm(false);
+  } catch (error) {
+    console.error("Failed to save review:", error);
+    alert("Failed to save review. Please try again.");
+  }
+};
 
   if (loading) return <div className="container mx-auto p-4">Loading...</div>;
   if (error) return <div className="container mx-auto p-4 text-red-500">{error}</div>;
@@ -99,7 +114,11 @@ const AnimePage = () => {
               <ReviewForm
                 anime={anime}
                 existingReview={userReview}
-                onSubmit={handleReviewSubmit}
+                onSubmit={(reviewData) => handleReviewSubmit({
+                  ...reviewData,
+                  animeTitle: anime.title.english || anime.title.romaji,
+                  animeCover: anime.coverImage.large
+                })}
                 onCancel={() => setShowReviewForm(false)}
               />
             )}

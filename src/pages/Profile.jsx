@@ -3,6 +3,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useWatchlist } from '../hooks/useWatchlist';
 import AnimeCard from '../components/AnimeCard';
 import ReviewCard from '../components/ReviewCard';
+import { Link } from 'react-router-dom';
 
 const Profile = () => {
   const { user } = useAuth();
@@ -86,32 +87,25 @@ const Profile = () => {
           ) : (
             <div className="space-y-6">
               {reviews.map(review => (
-                <div key={review.id} className="flex flex-col md:flex-row gap-4">
-                  <div className="md:w-1/4 lg:w-1/5">
-                    <AnimeCard 
-                      anime={{
-                        id: review.animeId,
-                        title: { 
-                          english: review.animeTitle,
-                          romaji: review.animeTitle
-                        },
-                        coverImage: { 
-                          large: review.animeCover || "https://placehold.co/300x400" 
-                        }
-                      }}
-                    />
+                <div key={review.id} className="flex flex-col md:flex-row gap-4 mb-6">
+                  <div className="md:w-1/4">
+                    <Link to={`/anime/${review.animeId}`}>
+                      <img 
+                        src={review.animeCover} 
+                        alt={review.animeTitle}
+                        className="w-full rounded-lg shadow-sm"
+                        onError={(e) => e.target.src = 'https://placehold.co/300x400'}
+                      />
+                    </Link>
                   </div>
-                  <div className="md:w-3/4 lg:w-4/5">
+                  <div className="md:w-3/4">
                     <ReviewCard 
                       review={review}
-                      isOwner={true}
-                      onEdit={() => {
-                        // This would navigate to the anime page with review form open
-                        window.location.href = `/anime/${review.animeId}`;
-                      }}
-                      onDelete={() => {
+                      isOwner={review.userId === user?.uid}
+                      onEdit={() => window.location.href = `/anime/${review.animeId}`}
+                      onDelete={async () => {
                         if (window.confirm('Delete this review?')) {
-                          deleteReview(review.animeId);
+                          await deleteReview(review.animeId);
                         }
                       }}
                     />
