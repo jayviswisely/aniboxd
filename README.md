@@ -65,7 +65,7 @@ https://graphql.anilist.co
 - ✅ Pagination
 - 🔲 User profiles
 - ✅ Watchlist
-- 🔲 Ratings & Reviews
+- ✅ Ratings & Reviews
 - ✅ Light/dark theme toggle
 - 🔲 Sorting by genre, score, status
 - 🔲 Social feed of reviews from others
